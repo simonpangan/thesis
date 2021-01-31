@@ -22,7 +22,7 @@ class Accounts extends Authenticatable
      */
     protected $fillable = [
         'Name',
-        'Email',
+        'EmailAddress',
         'Username',
         'Password',
     ];
@@ -46,7 +46,7 @@ class Accounts extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-//because you change password field name
+    //because you change password field name
     public function getAuthPassword()
     {
       return $this->Password;

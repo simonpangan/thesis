@@ -17,12 +17,22 @@ class CreateUsersTable extends Migration
             $table->id('AccountID');
             $table->string('Name');
             $table->string('Username')->unique();
-            $table->string('Email')->unique();
+            $table->string('EmailAddress')->unique();
             $table->timestamp('EmailVerifiedAt')->nullable();
             $table->string('Password');
             $table->RememberToken();
             $table->timestamps();
         });
+        // Schema::create('Accounts', function (Blueprint $table) {
+        //     $table->id('AccountID');
+        //     $table->string('Name');
+        //     $table->string('Username')->unique();
+        //     $table->string('EmailAddress')->unique();
+        //     $table->timestamp('EmailVerifiedAt')->nullable();
+        //     $table->string('Password');
+        //     $table->RememberToken();
+        //     $table->timestamps();
+        // });
     }
 
     /**
