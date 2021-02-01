@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         DB::table('accounts')->insert([
             [
                 'Name' => 'Simon Pangan',
+                'Role' => 'Admin',
                 'Username' => 'simonpangan',
                 'EmailAddress' => 'simonpangan@yahoo.com',
                 'Password' => Hash::make('simonpangan'),
@@ -27,19 +28,13 @@ class DatabaseSeeder extends Seeder
             , [
 
                 'Name' => 'Simon Pangan12',
+                'Role' => 'User',
                 'Username' => 'simonpangan12',
                 'EmailAddress' => 'simonpangan12@yahoo.com',
                 'Password' => Hash::make('simonpangan12'),
 
             ]
-            , [
-
-                'Name' => 'Simon Pangan123',
-                'Username' => 'simonpangan123',
-                'EmailAddress' => 'simonpangan123@yahoo.com',
-                'Password' => Hash::make('simonpangan123'),
-
-            ]
+            
         ]);
 
         // \App\Models\User::factory(10)->create();
