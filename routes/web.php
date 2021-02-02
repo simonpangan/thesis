@@ -31,7 +31,14 @@ Route::middleware(['auth'])->group(function () {
 
 
 //for testing
+//refactor
 use App\Http\Controllers\BooksController;
 
-Route::post('/books', [App\Http\Controllers\BooksController::class, 'store']);
-Route::patch('/books/{book}', [App\Http\Controllers\BooksController::class, 'update']);
+Route::post('/books', [BooksController::class, 'store']);
+Route::patch('/books/{book}', [BooksController::class, 'update']);
+ Route::delete('/books/{book}', [BooksController::class, 'destroy']);
+// Route::patch('/books/{book}-{slug}', [App\Http\Controllers\BooksController::class, 'update']);
+// Route::delete('/books/{book}-{slug}', [App\Http\Controllers\BooksController::class, 'destroy']);
+
+
+Route::post('/author', [App\Http\Controllers\AuthorsController::class, 'store']);

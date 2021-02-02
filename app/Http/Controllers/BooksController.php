@@ -13,7 +13,11 @@ class BooksController extends Controller
         //     'author' => 'required',
         // ]);
         // Book::create($data);
-        Book::create($this->validateRequest());
+
+     
+        $book =  Book::create($this->validateRequest());
+    
+        return redirect($book->path());
     }
 
     public function update(Book $book) { //route model binding 
@@ -24,6 +28,15 @@ class BooksController extends Controller
         // ]);
         // $book->update($data);
         $book->update($this->validateRequest());
+
+        return redirect($book->path());
+    }
+
+    public function destroy(Book $book) 
+    { 
+        $book->delete();
+
+        return redirect('/books');
     }
     protected function validateRequest() {
        return  $data = request()->validate([
