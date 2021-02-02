@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,10 +19,19 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/User', function () {
-    return view('user');
-})->name('user');
+    Route::get('/User', function () {
+        return view('user');
+    })->name('user')->middleware('role:User');
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('role:Admin')->name('home');
+
+});
 
 
-Route::get('/Home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//for testing
+use App\Http\Controllers\BooksController;
+
+Route::post('/books', [App\Http\Controllers\BooksController::class, 'store']);
+Route::patch('/books/{book}', [App\Http\Controllers\BooksController::class, 'update']);
