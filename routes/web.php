@@ -42,3 +42,64 @@ Route::patch('/books/{book}', [BooksController::class, 'update']);
 
 
 Route::post('/author', [App\Http\Controllers\AuthorsController::class, 'store']);
+
+
+//FOR LARAVEL RELATIONSHIP
+
+Route::get('/onetoone', function () {
+
+    $user = \App\Models\Accounts::find(1);
+    $userPhone = $user->phone;//
+
+    $phone = \App\Models\Phone::find(1);
+    $phoneUser = $phone->user;
+
+
+    return $phone;
+});
+
+Route::get('/onetomany', function () {
+
+    $user = \App\Models\Accounts::find(2);
+    $userpost = $user->posts;//
+
+    $phone = \App\Models\Phone::find(1);
+    $phoneUser = $phone->user;
+
+
+    return $user;
+});
+
+
+Route::get('/manytomany', function () {
+
+    $user = \App\Models\Accounts::find(1);
+    $userSubjects = $user->subjects;
+   
+    // $subject = \App\Models\Subject::find(1);
+    // $subjectusers = $subject->user;
+
+    return $userSubjects[0]->subjectname;
+});
+
+
+Route::get('/loopUpOneToONe', function () {
+
+    $user = \App\Models\Accounts::find(1);
+    $userpost = $user->posts;//
+    $userSex = $user->sex;//
+
+
+    return $userSex->Sex;
+});
+
+
+
+Route::get('/loopUpOneToMany', function () {
+
+    $user = \App\Models\Sex::find(1);
+    $allsexs = \App\Models\Sex::all();
+    return $user->users;
+});
+
+

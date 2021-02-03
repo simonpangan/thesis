@@ -13,9 +13,16 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+        Schema::create('sexTable', function (Blueprint $table) {
+            $table->bigIncrements('SexID');
+            $table->string('Sex');
+            $table->timestamps();
+        });
+  
         Schema::create('Accounts', function (Blueprint $table) {
             $table->id('AccountID');
             $table->string('Name');
+            $table->unsignedBigInteger('SexId');
             $table->string('Role');
             $table->string('Username')->unique();
             $table->string('EmailAddress')->unique();
@@ -23,6 +30,9 @@ class CreateUsersTable extends Migration
             $table->string('Password');
             $table->RememberToken();
             $table->timestamps();
+
+            $table->foreign('SexId')->references('SexID')->on('sexTable')->onDelete('cascade');
+
         });
         // Schema::create('Accounts', function (Blueprint $table) {
         //     $table->id('AccountID');

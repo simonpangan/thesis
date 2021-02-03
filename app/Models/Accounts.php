@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
+use App\Models\Phone;
+use App\Models\Sex;
+use App\Models\Post;
+use App\Models\Subject;
+use Cache;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Cache;
 
 class Accounts extends Authenticatable implements MustVerifyEmail
 {
     //old User class
-    //customize 
-    use Notifiable;
+    //customize
+    use Notifiable, HasFactory;
 
     protected $table = 'Accounts';
     protected $primaryKey = 'AccountID';
@@ -23,6 +27,7 @@ class Accounts extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'Name',
+        'SexId',
         'Role',
         'EmailAddress',
         'Username',
@@ -51,30 +56,36 @@ class Accounts extends Authenticatable implements MustVerifyEmail
     //because you change password field name
     public function getAuthPassword()
     {
-      return $this->Password;
+        return $this->Password;
     }
-
     public function isOnline()
     {
-      return Cache::has('user-is-online-' . $this->AccountID);
+        return Cache::has('user-is-online-' . $this->AccountID);
     }
 
-    // public function getEmailForPasswordReset()
-    // {
-    //     return $this->EmailAddress;
-    // }
+    //one to one
+    public function phone()
+    {
+        return $this->hasOne(Phone::class, 'accountid');
+    }
+    // one to many
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'account_id');
+    }
 
-    // public function routeNotificationFor($driver)
-    // {
-    //     if (method_exists($this, $method = 'routeNotificationFor'.Str::studly($driver))) {
-    //         return $this->{$method}();
-    //     }
+    //many to many
 
-    //     switch ($driver) {
-    //         case 'database':
-    //             return $this->notifications();
-    //         case 'mail':
-    //             return $this->EmailAddress;
-    //     }
-    // }
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class,'users_subject','user_id','subjectid');
+    }
+
+    //look up table (one to one side)
+
+    public function sex()
+    {
+        return $this->hasOne(Sex::class, 'SexID');
+    }
+
 }
