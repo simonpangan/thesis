@@ -44,6 +44,8 @@
                                                 </li>
                                             @endif
                                         </td>
+                                        <td>{{ \Carbon\Carbon::parse($account->last_seen)->diffForHumans() }}</td>
+                                   
                                     </tr>
                                 @endforeach
                             </table>
