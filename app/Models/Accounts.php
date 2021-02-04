@@ -20,11 +20,14 @@ class Accounts extends Authenticatable implements MustVerifyEmail
 
     protected $table = 'Accounts';
     protected $primaryKey = 'AccountID';
+  
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+
+ 
     protected $fillable = [
         'Name',
         'SexId',
@@ -53,11 +56,19 @@ class Accounts extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    //change user 
+    public function getRememberTokenName()
+    {
+        return 'myTokenField';
+    }
+
     //because you change password field name
     public function getAuthPassword()
     {
         return $this->Password;
     }
+
+    //check if user is online
     public function isOnline()
     {
         return Cache::has('user-is-online-' . $this->AccountID);
