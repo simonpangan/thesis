@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Cache;
 use Carbon\Carbon;
+use App\Models\Accounts;
 
 class LastUserActivity
 {
@@ -23,6 +24,8 @@ class LastUserActivity
         if(Auth::check()) {
             $expiresAt = Carbon::now()->addMinutes(1);
             Cache::put('user-is-online-' . Auth::user()->AccountID, true, $expiresAt);
+
+            Accounts::where('AccountID', Auth::user()->AccountID)->update(['last_seen' => Carbon::now()]);
         }
         return $next($request);
     }

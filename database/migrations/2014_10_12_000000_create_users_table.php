@@ -28,7 +28,8 @@ class CreateUsersTable extends Migration
             $table->string('EmailAddress')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('Password');
-            $table->RememberToken();
+            $table->timestamp('last_seen')->nullable();
+            $table->string('myTokenField', 100)->nullable();
             $table->timestamps();
 
             $table->foreign('SexId')->references('SexID')->on('sexTable')->onDelete('cascade');
