@@ -17,6 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+// email testing
+use App\Mail\WelcomeMail;
+Route::get('/email', function () { 
+    Mail::to('email@email.com')->send(new WelcomeMail());
+    return new WelcomeMail();
+});
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
