@@ -22,6 +22,10 @@ class Accounts extends Authenticatable implements MustVerifyEmail
 
     protected $table = 'Accounts';
     protected $primaryKey = 'AccountID';
+   // public $timestamps = false;
+    const CREATED_AT = 'datetime_created';
+    const UPDATED_AT = 'datetime_updated';
+
     
     /**
      * The attributes that are mass assignable.
@@ -76,7 +80,6 @@ class Accounts extends Authenticatable implements MustVerifyEmail
     }
     
     // custom remember token name 
-    
     public function getRememberTokenName()
     {
         return 'remember_key';

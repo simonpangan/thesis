@@ -30,7 +30,8 @@ class CreateUsersTable extends Migration
             $table->string('Password');
             $table->timestamp('last_seen')->nullable();
             $table->string('remember_key', 100)->nullable();
-            $table->timestamps();
+            $table->timestamp('datetime_created')->nullable();
+            $table->timestamp('datetime_updated')->nullable();
 
          //   $table->foreign('SexId')->references('SexID')->on('sexTable')->onDelete('cascade');
 
