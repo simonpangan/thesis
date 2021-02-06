@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
+
 class Accounts extends Authenticatable implements MustVerifyEmail
 {
     //old User class
@@ -20,7 +22,7 @@ class Accounts extends Authenticatable implements MustVerifyEmail
 
     protected $table = 'Accounts';
     protected $primaryKey = 'AccountID';
-  
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -32,7 +34,7 @@ class Accounts extends Authenticatable implements MustVerifyEmail
         'Name',
         'SexId',
         'Role',
-        'EmailAddress',
+        'userEmail',
         'Username',
         'Password',
     ];
@@ -44,7 +46,7 @@ class Accounts extends Authenticatable implements MustVerifyEmail
      */
     protected $hidden = [
         'Password',
-        'remember_token',
+        'remember_key',
     ];
 
     /**
@@ -53,15 +55,33 @@ class Accounts extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'verifiedAt' => 'datetime',
     ];
 
-    //change user 
-    public function getRememberTokenName()
+
+    //custom email 
+    public function getEmailAttribute($value)
     {
-        return 'myTokenField';
+        return $this->userEmail;
     }
 
+    public function getEmailVerifiedAtAttribute($value)
+    {
+        return $this->verifiedAt;
+    }
+    
+    public function setEmailVerifiedAtAttribute($value)
+    {
+        $this->attributes['verifiedAt'] = $value;
+    }
+    
+    // custom remember token name 
+    
+    public function getRememberTokenName()
+    {
+        return 'remember_key';
+    }
+    
     //because you change password field name
     public function getAuthPassword()
     {

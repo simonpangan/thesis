@@ -55,13 +55,10 @@ class LoginController extends Controller
     }
 
     //change to username instead of loggin in using email
-    // public function username()
-    // {
-    //     return 'username';
-    // }
-
     public function username()
     {
-        return 'EmailAddress';
+        return 'userEmail';
     }
+
+  
 }

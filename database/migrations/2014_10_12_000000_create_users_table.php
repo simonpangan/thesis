@@ -22,29 +22,19 @@ class CreateUsersTable extends Migration
         Schema::create('Accounts', function (Blueprint $table) {
             $table->id('AccountID');
             $table->string('Name');
-            $table->unsignedBigInteger('SexId');
+    //        $table->unsignedBigInteger('SexId');
             $table->string('Role');
             $table->string('Username')->unique();
-            $table->string('EmailAddress')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('userEmail')->unique();
+            $table->timestamp('verifiedAt')->nullable();
             $table->string('Password');
             $table->timestamp('last_seen')->nullable();
-            $table->string('myTokenField', 100)->nullable();
+            $table->string('remember_key', 100)->nullable();
             $table->timestamps();
 
-            $table->foreign('SexId')->references('SexID')->on('sexTable')->onDelete('cascade');
+         //   $table->foreign('SexId')->references('SexID')->on('sexTable')->onDelete('cascade');
 
         });
-        // Schema::create('Accounts', function (Blueprint $table) {
-        //     $table->id('AccountID');
-        //     $table->string('Name');
-        //     $table->string('Username')->unique();
-        //     $table->string('EmailAddress')->unique();
-        //     $table->timestamp('EmailVerifiedAt')->nullable();
-        //     $table->string('Password');
-        //     $table->RememberToken();
-        //     $table->timestamps();
-        // });
     }
 
     /**

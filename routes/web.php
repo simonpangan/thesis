@@ -13,10 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
+
 Route::get('/', function () {
+    
     return view('welcome');
 });
 
+//email verification 
+
+Auth::routes(['verify' => true]);
 
 // email testing
 use App\Mail\WelcomeMail;
@@ -24,9 +29,9 @@ Route::get('/email', function () {
     Mail::to('email@email.com')->send(new WelcomeMail());
     return new WelcomeMail();
 });
-Auth::routes();
 
-Route::middleware(['auth'])->group(function () {
+
+Route::middleware(['auth','verified'])->group(function () {
 
     Route::get('/User', function () {
         return view('user');
