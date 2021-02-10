@@ -13,22 +13,71 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
+// Route::get('/verify/resend', [App\Http\Controllers\TwoFactorController::class, 'resend'])->name('verify.resend');
+
+
+// Route::get('verify/resend', 'Auth\TwoFactorController@resend')->name('verify.resend');
+// Route::resource('verify', 'Auth\TwoFactorController')->only(['index', 'store']);
+
+
 
 Route::get('/', function () {
     
     return view('welcome');
 });
 
-//email verification 
-
+//EmailAddress verification 
 Auth::routes(['verify' => true]);
 
-// email testing
-use App\Mail\WelcomeMail;
-Route::get('/email', function () { 
-    Mail::to('email@email.com')->send(new WelcomeMail());
-    return new WelcomeMail();
-});
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+
+
+
+
+Route::post('/forgot-password', function (Request $request) {
+
+    $request->validate(['userEmail' => 'required|email']);
+
+    $status = Password::sendResetLink(
+        $request->only('userEmail')
+    );
+
+    return $status === Password::RESET_LINK_SENT
+                ? back()->with(['status' => __($status)])
+                : back()->withErrors(['userEmail' => __($status)]);
+})->middleware('guest')->name('password.email');
+
+Route::get('/reset-password/{token}', function ($token) {
+    return view('auth.passwords.reset', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
+
+Route::post('/reset-password', function (Request $request) {
+    $request->validate([
+        'token' => 'required',
+        'userEmail' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
+
+    $status = Password::reset(
+        $request->only('userEmail', 'password', 'password_confirmation', 'token'),
+        function ($user, $password) use ($request) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->save();
+
+            $user->setRememberToken(Str::random(60));
+
+         //   event(new PasswordReset($user));
+        }
+    );
+
+    return $status == Password::PASSWORD_RESET
+                ? redirect()->route('login')->with('status', __($status))
+                : back()->withErrors(['userEmail' => [__($status)]]);
+})->middleware('guest')->name('password.update');
+
+
 
 
 Route::middleware(['auth','verified'])->group(function () {
@@ -40,6 +89,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('role:Admin')->name('home');
 
 });
+
 
 
 //for testing
@@ -54,6 +104,25 @@ Route::patch('/books/{book}', [BooksController::class, 'update']);
 
 
 Route::post('/author', [App\Http\Controllers\AuthorsController::class, 'store']);
+
+
+
+// EmailAddress testing
+// use App\Mail\WelcomeMail;
+use App\Events\NewCustomerHasRegisteredEvent;
+Route::get('/EmailAddress', function () { 
+
+    // Mail::to('EmailAddress@EmailAddress.com')->send(new WelcomeMail());  /step1
+    // dump('Registed to newsletter'); //step 2
+    // dump('Stack message here'); // step 3
+
+
+    $user = [
+      'email' => "simon_pangan@yahoo.com",  
+    ];
+            
+    event(new NewCustomerHasRegisteredEvent($user));
+}); 
 
 
 //FOR LARAVEL RELATIONSHIP

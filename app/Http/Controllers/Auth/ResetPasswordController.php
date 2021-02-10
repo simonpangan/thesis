@@ -30,6 +30,6 @@ class ResetPasswordController extends Controller
 
     public function username()
     {
-        return 'EmailAddress';
+        return 'userEmail';
     }
 }
